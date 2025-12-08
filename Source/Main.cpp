@@ -16,6 +16,9 @@ int main()
     if (window == NULL) return endProgram("Failed to create window.");
     glfwMakeContextCurrent(window);
 
+    GLFWcursor* cursor = loadImageToCursor("Resources/cursor.png");
+    glfwSetCursor(window, cursor);
+
     if (glewInit() != GLEW_OK) return endProgram("Failed to initialize GLEW.");
 
     glEnable(GL_BLEND);
