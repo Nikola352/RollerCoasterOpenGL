@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../Header/Util.h"
+#include "../Header/Render/TrackRenderer.h"
 
 int main()
 {
@@ -24,11 +25,21 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glClearColor(0.2f, 0.8f, 0.6f, 1.0f);
+    unsigned colorShader = createShader("Shader/color.vert", "Shader/color.frag");
+    unsigned textureShader = createShader("Shader/texture.vert", "Shader/texture.frag");
+
+    Track track;
+    TrackRenderer trackRenderer(colorShader);
+    trackRenderer.initialize();
+
+
+    glClearColor(0.145f, 0.588f, 0.745f, 1.0f);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
+
+        trackRenderer.render(track);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
