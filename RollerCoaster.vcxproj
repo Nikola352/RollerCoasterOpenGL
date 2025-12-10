@@ -125,17 +125,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Game\Track.cpp" />
+    <ClCompile Include="Source\Render\TrackRenderer.cpp" />
+    <ClCompile Include="Source\Render\WagonRenderer.cpp" />
     <ClCompile Include="Source\Util.cpp" />
+    <ClCompile Include="Source\Game\Wagon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Constants.h" />
+    <ClInclude Include="Header\Render\TrackRenderer.h" />
+    <ClInclude Include="Header\Render\WagonRenderer.h" />
     <ClInclude Include="Header\stb_image.h" />
+    <ClInclude Include="Header\Game\Track.h" />
     <ClInclude Include="Header\Util.h" />
+    <ClInclude Include="Header\Game\Wagon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shader\color.frag" />
+    <None Include="Shader\color.vert" />
+    <None Include="Shader\texture.frag" />
+    <None Include="Shader\texture.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\cursor.png" />
+    <Image Include="Resources\green_person.png" />
+    <Image Include="Resources\person.png" />
+    <Image Include="Resources\seatbelt.png" />
+    <Image Include="Resources\wagon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
