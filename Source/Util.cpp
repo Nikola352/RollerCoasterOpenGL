@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <thread>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Header/stb_image.h"
@@ -169,4 +170,20 @@ GLFWcursor* loadImageToCursor(const char* filePath) {
         stbi_image_free(ImageData);
 
     }
+}
+
+const int FPS = 75;
+
+void limitFps(double& lastTimeForRefresh)
+{
+    double now = glfwGetTime();
+    double targetFrameTime = 1.0 / FPS;
+    double remaining = (lastTimeForRefresh + targetFrameTime) - now;
+
+    if (remaining > 0.0)
+    {
+        std::this_thread::sleep_for(std::chrono::duration<double>(remaining));
+    }
+
+    lastTimeForRefresh = glfwGetTime();
 }
