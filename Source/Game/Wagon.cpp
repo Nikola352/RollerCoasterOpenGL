@@ -7,6 +7,9 @@
 
 const std::vector<Vec2> passengerDelta({Vec2(0.02666667f, 0.04f), Vec2(-0.0355555556, 0.04f) });
 
+Wagon::Wagon() : xPos(0.0f), yPos(0.0f), rotTan(0.0f) {
+}
+
 Wagon::Wagon(float x, float y) : xPos(x), yPos(y), rotTan(0.0f) {
 }
 

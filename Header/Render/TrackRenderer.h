@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "../Game/Track.h"
 
 class TrackRenderer {
 private:
@@ -20,7 +19,7 @@ public:
 
     ~TrackRenderer();
 
-    void initialize();
+    void init();
 
-    void render(Track track) const;
+    void render() const;
 };

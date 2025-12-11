@@ -24,5 +24,5 @@ public:
 
     void render(const Person& person) const;
 
-    void render(const std::vector<Person>& persons) const;
+    void render(const std::vector<Person*>& persons) const;
 };

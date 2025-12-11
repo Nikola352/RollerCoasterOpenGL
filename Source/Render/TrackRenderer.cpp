@@ -3,7 +3,7 @@
 #include "../../Header/Game/Track.h"
 
 TrackRenderer::TrackRenderer(unsigned int colorShader, size_t samples)
-	: shader(colorShader), numSamples(samples) { }
+	: shader(colorShader), numSamples(samples), VAO(0), VBO(0) { }
 
 TrackRenderer::~TrackRenderer() {
     if (VAO != 0) {
@@ -13,15 +13,13 @@ TrackRenderer::~TrackRenderer() {
 }
 
 std::vector<float> TrackRenderer::generateTrackPoints() {
-    Track track;
-
     std::vector<float> vertices;
     vertices.reserve(numSamples * 4);
 
     float point_dist = 2.0f / numSamples;
 
     for (float x = -1; x <= 1; x += point_dist) {
-        float y = track.getHeightAt(x), s = track.getSlopeAt(x);
+        float y = getTrackHeightAt(x), s = getTrackSlopeAt(x);
 
         // Calculate perpendicular direction (normal to the track)
         float len = sqrt(1 + s * s);
@@ -55,12 +53,12 @@ void TrackRenderer::setupBuffers(std::vector<float> vertices) {
     glBindVertexArray(0);
 }
 
-void TrackRenderer::initialize() {
+void TrackRenderer::init() {
     std::vector<float> vertices = generateTrackPoints();
     setupBuffers(vertices);
 }
 
-void TrackRenderer::render(Track track) const {
+void TrackRenderer::render() const {
     if (VAO == 0) {
         return;
     }
@@ -70,6 +68,6 @@ void TrackRenderer::render(Track track) const {
     glUniform3f(glGetUniformLocation(shader, "uColor"), 0.45f, 0.5f, 0.6f); // metallic
 
     glBindVertexArray(VAO);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, numSamples * 2);
-    glBindVertexArray(0);
 }

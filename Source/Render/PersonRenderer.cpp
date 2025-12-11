@@ -95,7 +95,7 @@ void PersonRenderer::render(const Person& person) const {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-void PersonRenderer::render(const std::vector<Person>& persons) const {
+void PersonRenderer::render(const std::vector<Person*>& persons) const {
     if (VAO == 0 || persons.empty()) {
         return;
     }
@@ -121,10 +121,10 @@ void PersonRenderer::render(const std::vector<Person>& persons) const {
     glUniform1i(overlayTexLoc, 1);
 
     for (const auto& person : persons) {
-        glUniform1f(xLoc, person.getXPos());
-        glUniform1f(yLoc, person.getYPos());
+        glUniform1f(xLoc, person->getXPos());
+        glUniform1f(yLoc, person->getYPos());
 
-        float rotTan = person.getRotationTangent();
+        float rotTan = person->getRotationTangent();
         float div = sqrt(1 + rotTan * rotTan);
         float rotSin = rotTan / div;
         float rotCos = 1.0f / div;
@@ -133,14 +133,14 @@ void PersonRenderer::render(const std::vector<Person>& persons) const {
         glUniform1f(cosLoc, rotCos);
 
         glActiveTexture(GL_TEXTURE0);
-        if (person.getIsSick()) {
+        if (person->getIsSick()) {
             glBindTexture(GL_TEXTURE_2D, sickTexture);
         }
         else {
             glBindTexture(GL_TEXTURE_2D, normalTexture);
         }
 
-        bool hasSeatbelt = person.getHasSeatbelt();
+        bool hasSeatbelt = person->getHasSeatbelt();
         glUniform1i(hasOverlayLoc, hasSeatbelt);
 
         if (hasSeatbelt) {

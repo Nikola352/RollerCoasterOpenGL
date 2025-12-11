@@ -12,6 +12,7 @@ private:
 
 	Vec2 calculatePassengerPosition(size_t index) const;
 public:
+	Wagon();
 	Wagon(float x, float y);
 
 	float getXPos() const;

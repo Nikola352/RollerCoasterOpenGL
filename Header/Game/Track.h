@@ -1,9 +1,6 @@
 #pragma once
 #include <vector>
 
-class Track {
-public:
-    float getHeightAt(float x) const;
+float getTrackHeightAt(float x);
 
-    float getSlopeAt(float x) const;
-};
+float getTrackSlopeAt(float x);
