@@ -44,7 +44,7 @@ void WagonRenderer::init() {
     setupBuffers();
 }
 
-void WagonRenderer::render(Wagon wagon) const {
+void WagonRenderer::render(const Wagon& wagon) const {
     if (VAO == 0) {
         return;
     }
@@ -56,8 +56,8 @@ void WagonRenderer::render(Wagon wagon) const {
     float aspect = (float)viewport[2] / (float)viewport[3];
     glUniform1f(glGetUniformLocation(shader, "uAspect"), aspect);
 
-    glUniform1f(glGetUniformLocation(shader, "uX"), wagon.getXPos() + 0.05f);
-    glUniform1f(glGetUniformLocation(shader, "uY"), wagon.getYPos() + 0.05f);
+    glUniform1f(glGetUniformLocation(shader, "uX"), wagon.getXPos());
+    glUniform1f(glGetUniformLocation(shader, "uY"), wagon.getYPos());
 
     float rotTan = wagon.getRotationTangent();
     float div = sqrt(1 + rotTan * rotTan);
@@ -67,10 +67,52 @@ void WagonRenderer::render(Wagon wagon) const {
     glUniform1f(glGetUniformLocation(shader, "uRotSin"), rotSin);
     glUniform1f(glGetUniformLocation(shader, "uRotCos"), rotCos);
 
+    glUniform1i(glGetUniformLocation(shader, "uHasOverlay"), false);
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     
     glBindVertexArray(VAO);
     
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+}
+
+void WagonRenderer::render(const std::vector<Wagon>& wagons) const {
+    if (VAO == 0 || wagons.empty()) {
+        return;
+    }
+
+    glUseProgram(shader);
+
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    float aspect = (float)viewport[2] / (float)viewport[3];
+    glUniform1f(glGetUniformLocation(shader, "uAspect"), aspect);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindVertexArray(VAO);
+
+    GLint hasOverlayLoc = glGetUniformLocation(shader, "uHasOverlay");
+    glUniform1i(hasOverlayLoc, false);
+
+    GLint xLoc = glGetUniformLocation(shader, "uX");
+    GLint yLoc = glGetUniformLocation(shader, "uY");
+    GLint sinLoc = glGetUniformLocation(shader, "uRotSin");
+    GLint cosLoc = glGetUniformLocation(shader, "uRotCos");
+
+    for (const Wagon wagon : wagons) {
+        glUniform1f(xLoc, wagon.getXPos());
+        glUniform1f(yLoc, wagon.getYPos());
+
+        float rotTan = wagon.getRotationTangent();
+        float div = sqrt(1 + rotTan * rotTan);
+        float rotSin = rotTan / div;
+        float rotCos = 1.0f / div;
+
+        glUniform1f(sinLoc, rotSin);
+        glUniform1f(cosLoc, rotCos);
+
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    }
 }

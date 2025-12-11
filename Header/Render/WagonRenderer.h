@@ -18,5 +18,7 @@ public:
 
     void init();
 
-    void render(Wagon wagon) const;
+    void render(const Wagon& wagon) const;
+
+    void render(const std::vector<Wagon>& wagons) const;
 };

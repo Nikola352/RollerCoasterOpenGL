@@ -124,8 +124,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Constants.cpp" />
+    <ClCompile Include="Source\Game\Person.cpp" />
+    <ClCompile Include="Source\Game\Train.cpp" />
+    <ClCompile Include="Source\Geometry.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Game\Track.cpp" />
+    <ClCompile Include="Source\Render\PersonRenderer.cpp" />
     <ClCompile Include="Source\Render\TrackRenderer.cpp" />
     <ClCompile Include="Source\Render\WagonRenderer.cpp" />
     <ClCompile Include="Source\Util.cpp" />
@@ -133,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Constants.h" />
+    <ClInclude Include="Header\Game\Person.h" />
+    <ClInclude Include="Header\Game\Train.h" />
+    <ClInclude Include="Header\Geometry.h" />
+    <ClInclude Include="Header\Render\PersonRenderer.h" />
     <ClInclude Include="Header\Render\TrackRenderer.h" />
     <ClInclude Include="Header\Render\WagonRenderer.h" />
     <ClInclude Include="Header\stb_image.h" />
