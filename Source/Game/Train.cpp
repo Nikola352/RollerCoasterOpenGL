@@ -188,7 +188,7 @@ float Train::getAverageSlope() const {
 }
 
 static float calcCos(float tg) {
-    return std::max(1.0f / sqrtf(1 + tg * tg), 0.015f);
+    return std::max(1.0f / sqrtf(1 + tg * tg), 0.1f);
 }
 
 void Train::update(float deltaTime) {
@@ -206,8 +206,8 @@ void Train::update(float deltaTime) {
         //    acceleration = 0.15f;
         //}
         acceleration = -0.1f * avgSlope;
-        if (acceleration > 0.2f) acceleration = 0.2f;
-        if (acceleration < -0.2f) acceleration = -0.2f;
+        if (acceleration > 0.2f) acceleration = 0.15f;
+        if (acceleration < -0.2f) acceleration = -0.15f;
     }
 
     velocity += acceleration * deltaTime;
@@ -218,34 +218,35 @@ void Train::update(float deltaTime) {
 }
 
 void Train::updateWagonPositions() {
-    const float xDelta = 0.08f;
+    const float desiredDistance = 0.08f;
     float currentXPos = frontXPos;
+
     for (Wagon& wagon : wagons) {
         float x = currentXPos;
         float y = getTrackHeightAt(x);
         float slope = getTrackSlopeAt(x);
 
+        // Adjust X-delta based on slope to maintain consistent arc length
+        float xDelta = desiredDistance * calcCos(slope);
+
         if (fabs(slope) < 1e-5) {
             wagon.setXPos(x);
             wagon.setYPos(y + 0.025f);
             wagon.setRotationTangent(0.0f);
-            currentXPos -= xDelta;
-            continue;
         }
-
-        float tg = 1.0f / slope;
-        float s = tg / sqrtf(1 + tg * tg), c = 1.0f / sqrtf(1 + tg * tg);
-
-        float offsetX = 0.025f * c;
-        float offsetY = 0.025f * s;
-        if (slope > 0) {
-            offsetX = -offsetX;
-            offsetY = -offsetY;
+        else {
+            float tg = 1.0f / slope;
+            float s = tg / sqrtf(1 + tg * tg), c = 1.0f / sqrtf(1 + tg * tg);
+            float offsetX = 0.025f * c;
+            float offsetY = 0.025f * s;
+            if (slope > 0) {
+                offsetX = -offsetX;
+                offsetY = -offsetY;
+            }
+            wagon.setXPos(x + offsetX);
+            wagon.setYPos(y + offsetY);
+            wagon.setRotationTangent(slope);
         }
-
-        wagon.setXPos(x + offsetX);
-        wagon.setYPos(y + offsetY);
-        wagon.setRotationTangent(slope);
 
         currentXPos -= xDelta;
     }
