@@ -89,7 +89,7 @@ void RollerCoaster::handleAddPassengerSignal() {
 }
 
 void RollerCoaster::handlePassengerClickSignal(size_t index) {
-	if (index >= train.getTotalPassengerCount()) {
+	if (!train.isSeatTaken(index)) {
 		return;
 	}
 
@@ -98,13 +98,11 @@ void RollerCoaster::handlePassengerClickSignal(size_t index) {
 		p.setHasSeatbelt(true);
 	}
 	else if (gameState == OFFBOARDING) {
-		try {
+		if (train.isSeatTaken(index)) {
 			train.removePassenger(index);
-		}
-		catch (std::out_of_range e) {}
-
-		if (train.getTotalPassengerCount() == 0) {
-			gameState = ONBOARDING;
+			if (train.getTotalPassengerCount() == 0) {
+				gameState = ONBOARDING;
+			}
 		}
 	}
 }

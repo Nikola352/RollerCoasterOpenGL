@@ -45,6 +45,7 @@ public:
     Person& getPassenger(size_t index);
     const Person& getPassenger(size_t index) const;
     void removePassenger(size_t index);
+    bool isSeatTaken(size_t index) const;
 
     // High-level operations
     void stop();

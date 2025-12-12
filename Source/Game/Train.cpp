@@ -155,6 +155,23 @@ const Person& Train::getPassenger(size_t index) const {
 
     return wagon.getPassengers()[passengerIndex];
 }
+
+bool Train::isSeatTaken(size_t index) const {
+    size_t wagonIndex = index / 2;
+    size_t passengerIndex = index % 2;
+
+    if (wagonIndex >= wagons.size()) {
+        return false;
+    }
+
+    const Wagon& wagon = wagons[wagonIndex];
+    if (passengerIndex >= wagon.getPassengers().size()) {
+        return false;
+    }
+
+    return true;
+}
+
 void Train::removePassenger(size_t index) {
     size_t wagonIndex = index / 2;
     size_t passengerIndex = index % 2;
