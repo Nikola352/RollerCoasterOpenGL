@@ -155,6 +155,21 @@ const Person& Train::getPassenger(size_t index) const {
 
     return wagon.getPassengers()[passengerIndex];
 }
+void Train::removePassenger(size_t index) {
+    size_t wagonIndex = index / 2;
+    size_t passengerIndex = index % 2;
+
+    if (wagonIndex >= wagons.size()) {
+        throw std::out_of_range("Passenger index out of range (wagon doesn't exist)");
+    }
+
+    Wagon& wagon = wagons[wagonIndex];
+    if (passengerIndex >= wagon.getPassengers().size()) {
+        throw std::out_of_range("Passenger index out of range (passenger doesn't exist in wagon)");
+    }
+
+    wagon.removePassenger(passengerIndex);
+}
 
 // High-level operations
 void Train::stop() {
@@ -188,7 +203,7 @@ float Train::getAverageSlope() const {
 }
 
 static float calcCos(float tg) {
-    return std::max(1.0f / sqrtf(1 + tg * tg), 0.1f);
+    return std::max(1.0f / sqrtf(1 + tg * tg), 0.05f);
 }
 
 void Train::update(float deltaTime) {
@@ -205,9 +220,9 @@ void Train::update(float deltaTime) {
         //else {
         //    acceleration = 0.15f;
         //}
-        acceleration = -0.1f * avgSlope;
-        if (acceleration > 0.2f) acceleration = 0.15f;
-        if (acceleration < -0.2f) acceleration = -0.15f;
+        acceleration = -0.08f * avgSlope;
+        if (acceleration > 0.5f) acceleration = 0.5f;
+        if (acceleration < -0.45f) acceleration = -0.45f;
     }
 
     velocity += acceleration * deltaTime;

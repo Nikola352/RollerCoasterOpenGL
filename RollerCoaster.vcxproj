@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Constants.cpp" />
     <ClCompile Include="Source\Game\Person.cpp" />
+    <ClCompile Include="Source\Game\RollerCoaster.cpp" />
     <ClCompile Include="Source\Game\Train.cpp" />
     <ClCompile Include="Source\Geometry.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Header\Constants.h" />
     <ClInclude Include="Header\Game\Person.h" />
+    <ClInclude Include="Header\Game\RollerCoaster.h" />
     <ClInclude Include="Header\Game\Train.h" />
     <ClInclude Include="Header\Geometry.h" />
     <ClInclude Include="Header\Render\PersonRenderer.h" />

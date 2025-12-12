@@ -27,4 +27,5 @@ public:
 	void addPassenger(Person& person);
 	std::vector<Person>& getPassengers();
 	const std::vector<Person>& getPassengers() const;
+	void removePassenger(size_t index);
 };

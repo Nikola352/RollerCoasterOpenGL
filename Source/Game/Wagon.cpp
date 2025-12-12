@@ -85,3 +85,7 @@ std::vector<Person>& Wagon::getPassengers() {
 const std::vector<Person>& Wagon::getPassengers() const {
     return passengers;
 }
+
+void Wagon::removePassenger(size_t index) {
+    passengers.erase(passengers.begin() + index);
+}
