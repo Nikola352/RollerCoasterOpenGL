@@ -1,8 +1,38 @@
 ﻿#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include "../Header/Util.h"
 #include "../Header/Render/TrackRenderer.h"
+#include "../Header/Render/WagonRenderer.h"
+#include "../Header/Render/PersonRenderer.h"
+#include "../Header/Game/RollerCoaster.h"
+
+RollerCoaster* g_rollerCoaster = nullptr;
+
+static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (action != GLFW_PRESS) return;
+
+    if (g_rollerCoaster == nullptr) return;
+
+    switch (key)
+    {
+    case GLFW_KEY_ESCAPE:
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+        break;
+
+    case GLFW_KEY_SPACE:
+        g_rollerCoaster->handleAddPassengerSignal();
+        break;
+
+    case GLFW_KEY_ENTER:
+        g_rollerCoaster->handleStartSignal();
+        break;
+
+    case GLFW_KEY_1: case GLFW_KEY_2: case GLFW_KEY_3: case GLFW_KEY_4:
+    case GLFW_KEY_5: case GLFW_KEY_6: case GLFW_KEY_7: case GLFW_KEY_8:
+        g_rollerCoaster->handleSickSignal(key - GLFW_KEY_1);
+    }
+}
 
 int main()
 {
@@ -13,8 +43,10 @@ int main()
 
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
     GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "RollerCoaster", monitor, NULL);
     if (window == NULL) return endProgram("Failed to create window.");
+
     glfwMakeContextCurrent(window);
 
     GLFWcursor* cursor = loadImageToCursor("Resources/cursor.png");
@@ -28,24 +60,47 @@ int main()
     unsigned colorShader = createShader("Shader/color.vert", "Shader/color.frag");
     unsigned textureShader = createShader("Shader/texture.vert", "Shader/texture.frag");
 
-    Track track;
     TrackRenderer trackRenderer(colorShader);
-    trackRenderer.initialize();
+    trackRenderer.init();
 
+    WagonRenderer wagonRenderer(textureShader);
+    wagonRenderer.init();
 
-    glClearColor(0.145f, 0.588f, 0.745f, 1.0f);
+    PersonRenderer personRenderer(textureShader);
+    personRenderer.init();
+
+    RollerCoaster rollerCoaster;
+    g_rollerCoaster = &rollerCoaster;
+
+    glfwSetKeyCallback(window, keyCallback);
+
+    glClearColor(0.245f, 0.6f, 0.85f, 1.0f);
+
+    double lastTimeForRefresh = glfwGetTime();
+    double lastTime = lastTimeForRefresh;
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
         glClear(GL_COLOR_BUFFER_BIT);
 
-        trackRenderer.render(track);
+        double currentTime = glfwGetTime();
+        double deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        rollerCoaster.update(deltaTime);
+
+        trackRenderer.render();
+        wagonRenderer.render(rollerCoaster.getTrain().getWagons());
+        personRenderer.render(rollerCoaster.getTrain().getAllPassengers());
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
+        limitFps(lastTimeForRefresh);
     }
 
+    g_rollerCoaster = nullptr;
     glfwDestroyWindow(window);
     glfwTerminate();
+
     return 0;
 }
