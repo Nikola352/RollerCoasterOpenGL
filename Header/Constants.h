@@ -16,3 +16,4 @@ extern const char* const WAGON_TEXTURE_PATH;
 extern const char* const PERSON_TEXTURE_PATH;
 extern const char* const SICK_PERSON_TEXTURE_PATH;
 extern const char* const SEATBELT_TEXTURE_PATH;
+extern const char* const NAME_TEXTURE_PATH;

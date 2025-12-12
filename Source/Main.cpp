@@ -4,6 +4,7 @@
 #include "../Header/Render/TrackRenderer.h"
 #include "../Header/Render/WagonRenderer.h"
 #include "../Header/Render/PersonRenderer.h"
+#include "../Header/Render/NameRenderer.h"
 #include "../Header/Game/RollerCoaster.h"
 
 RollerCoaster* g_rollerCoaster = nullptr;
@@ -80,6 +81,9 @@ int main()
     PersonRenderer personRenderer(textureShader);
     personRenderer.init();
 
+    NameRenderer nameRenderer(textureShader);
+    nameRenderer.init();
+
     RollerCoaster rollerCoaster;
     g_rollerCoaster = &rollerCoaster;
 
@@ -102,6 +106,7 @@ int main()
 
         rollerCoaster.update(deltaTime);
 
+        nameRenderer.render();
         trackRenderer.render();
         wagonRenderer.render(rollerCoaster.getTrain().getWagons());
         personRenderer.render(rollerCoaster.getTrain().getAllPassengers());
