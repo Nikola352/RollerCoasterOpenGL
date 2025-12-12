@@ -9,9 +9,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Header/stb_image.h"
 
-// Autor: Nedeljko Tesanovic
-// Opis: pomocne funkcije za zaustavljanje programa, ucitavanje sejdera, tekstura i kursora
-// Smeju se koristiti tokom izrade projekta
+#include "../Header/Geometry.h"
 
 int endProgram(std::string message) {
     std::cout << message << std::endl;
@@ -186,4 +184,13 @@ void limitFps(double& lastTimeForRefresh)
     }
 
     lastTimeForRefresh = glfwGetTime();
+}
+
+// Get current cursor position in normlalized (-1, 1) space
+Vec2 getCursorPosition(GLFWwindow* window, float screenWidth, float screenHeight) {
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+    float xposNorm = (xpos / screenWidth) * 2 - 1;
+    float yposNorm = -((ypos / screenHeight) * 2 - 1);
+    return Vec2(xposNorm, yposNorm);
 }

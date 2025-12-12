@@ -27,6 +27,8 @@ public:
 
 	void handleSickSignal(size_t index);
 
+	void handleClick(float x, float y);
+
 	GameState getGameState() const;
 
 	const Train& getTrain() const;

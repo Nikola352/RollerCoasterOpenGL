@@ -153,3 +153,17 @@ const Train& RollerCoaster::getTrain() const {
 Train& RollerCoaster::getTrain() {
 	return train;
 }
+
+void RollerCoaster::handleClick(float x, float y) {
+	for (size_t i = 0; i < MAX_PASSENGERS; i++) {
+		if (!train.isSeatTaken(i)) continue;
+		Person& p = train.getPassenger(i);
+		if (
+			p.getXPos() - 0.014f <= x && x <= p.getXPos() + 0.014f && 
+			p.getYPos() - 0.025f <= y && y <= p.getYPos() + 0.025f
+		) {
+			handlePassengerClickSignal(i);
+			return;
+		}
+	}
+}

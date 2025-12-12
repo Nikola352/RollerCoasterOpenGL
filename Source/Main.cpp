@@ -34,6 +34,15 @@ static void keyCallback(GLFWwindow* window, int key, int scancode, int action, i
     }
 }
 
+float screenWidth, screenHeight;
+
+void mouseCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        Vec2 cursorPos = getCursorPosition(window, screenWidth, screenHeight);
+        g_rollerCoaster->handleClick(cursorPos.x, cursorPos.y);
+    }
+}
+
 int main()
 {
     glfwInit();
@@ -43,6 +52,8 @@ int main()
 
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+    screenWidth = mode->width, screenHeight = mode->height;
 
     GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "RollerCoaster", monitor, NULL);
     if (window == NULL) return endProgram("Failed to create window.");
@@ -73,6 +84,7 @@ int main()
     g_rollerCoaster = &rollerCoaster;
 
     glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseCallback);
 
     glClearColor(0.245f, 0.6f, 0.85f, 1.0f);
 

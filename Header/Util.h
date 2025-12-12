@@ -2,9 +2,12 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include "Geometry.h"
+
 int endProgram(std::string message);
 unsigned int createShader(const char* vsSource, const char* fsSource);
 unsigned loadImageToTexture(const char* filePath);
 GLFWcursor* loadImageToCursor(const char* filePath);
 
 void limitFps(double& lastTimeForRefresh);
+Vec2 getCursorPosition(GLFWwindow* window, float screenWidth, float screenHeight);
