@@ -38,6 +38,10 @@ void RollerCoaster::update(float timeDelta) {
 
 	case RIDE:
 		train.update(timeDelta);
+		if (train.getFrontXPos() >= END_POSITION) {
+			train.setConstantVelocity(REVERSE_VELOCITY);
+			gameState = REVERSE;
+		}
 		break;
 
 	case SLOWDOWN:
